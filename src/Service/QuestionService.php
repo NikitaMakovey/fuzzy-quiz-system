@@ -13,7 +13,6 @@ use App\Repository\QuizAttemptQuestionRepository;
 use App\Repository\QuizAttemptRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class QuestionService
@@ -37,13 +36,7 @@ class QuestionService
      */
     public function getQuestionById(int $id): ?array
     {
-        $question = $this->questionRepository->createQueryBuilder('q')
-            ->leftJoin('q.answers', 'a')
-            ->addSelect('a')
-            ->where('q.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult(Query::HYDRATE_ARRAY);
+        $question = $this->questionRepository->findOneById($id);
 
         if (!$question) {
             throw new \Exception('Question does not exist.');

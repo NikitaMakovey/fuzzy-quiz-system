@@ -79,9 +79,6 @@ class QuizAttemptQuestion
         return $this;
     }
 
-    /**
-     * @return Collection
-     */
     public function getQuizAttemptAnswers(): Collection
     {
         return $this->quizAttemptAnswers;

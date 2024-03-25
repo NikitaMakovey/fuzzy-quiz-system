@@ -20,4 +20,22 @@ class QuizRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Quiz::class);
     }
+
+    public function findAllRecords(): array
+    {
+        return $this->createQueryBuilder('quiz')
+            ->select(['quiz.id', 'quiz.title'])
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOneById(int $id)
+    {
+        return $this->createQueryBuilder('quiz')
+            ->select(['quiz.id', 'quiz.title'])
+            ->andWhere('quiz.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

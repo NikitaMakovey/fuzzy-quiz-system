@@ -29,10 +29,7 @@ class QuizService
      */
     public function getAllQuizzes(): array
     {
-        return $this->quizRepository->createQueryBuilder('quiz')
-            ->select(['quiz.id', 'quiz.title'])
-            ->getQuery()
-            ->getResult();
+        return $this->quizRepository->findAllRecords();
     }
 
     /**
@@ -43,12 +40,7 @@ class QuizService
      */
     public function getQuizById(int $id): ?array
     {
-        $quiz = $this->quizRepository->createQueryBuilder('quiz')
-            ->select(['quiz.id', 'quiz.title'])
-            ->andWhere('quiz.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
+        $quiz = $this->quizRepository->findOneById();
         if (!$quiz) {
             throw new \Exception('Quiz does not exist.');
         }

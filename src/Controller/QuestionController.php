@@ -36,6 +36,7 @@ class QuestionController extends AbstractController
         if (isset($response['next_question'])) {
             return $this->json($response);
         }
+
         return $this->redirectToRoute('api_quiz_attempt_show', ['id' => $response['quiz_attempt']]);
     }
 }

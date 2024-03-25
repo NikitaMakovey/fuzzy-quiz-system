@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\QuizAttempt;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,28 +22,20 @@ class QuizAttemptRepository extends ServiceEntityRepository
         parent::__construct($registry, QuizAttempt::class);
     }
 
-    //    /**
-    //     * @return QuizAttempt[] Returns an array of QuizAttempt objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('q')
-    //            ->andWhere('q.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('q.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?QuizAttempt
-    //    {
-    //        return $this->createQueryBuilder('q')
-    //            ->andWhere('q.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findOneById(int $id): mixed
+    {
+        return $this->createQueryBuilder('qa')
+            ->leftJoin('qa.quizAttemptQuestions', 'qaq')
+            ->leftJoin('qaq.question', 'q')
+            ->leftJoin('qaq.quizAttemptAnswers', 'qaa')
+            ->leftJoin('qaa.answer', 'a')
+            ->addSelect('qaq')
+            ->addSelect('qaa')
+            ->addSelect('q')
+            ->addSelect('a')
+            ->andWhere('qa.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult(Query::HYDRATE_ARRAY);
+    }
 }
