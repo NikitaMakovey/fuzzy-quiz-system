@@ -10,6 +10,7 @@ use App\Repository\QuizRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class QuizService
 {
@@ -17,7 +18,8 @@ class QuizService
         private readonly EntityManagerInterface $entityManager,
         private readonly QuizRepository $quizRepository,
         private readonly UserRepository $userRepository,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly RequestStack $requestStack
     ) {
     }
 
@@ -54,9 +56,9 @@ class QuizService
      *
      * @throws \Exception
      */
-    public function startQuiz(int $id, string $hash): ?int
+    public function startQuiz(int $id): ?int
     {
-        $user = $this->getUser($hash);
+        $user = $this->getUser();
 
         $quiz = $this->quizRepository->find($id);
 
@@ -74,8 +76,9 @@ class QuizService
      * @note
      * Get user if exists
      */
-    private function getUser(string $hash): User
+    private function getUser(): User
     {
+        $hash = $this->checkSession();
         $user = $this->userRepository->findOneBy(['hash' => $hash]);
         if (!$user) {
             $this->logger->debug('User does not exist.', ['hash' => $hash]);
@@ -85,6 +88,16 @@ class QuizService
         }
 
         return $user;
+    }
+
+    private function checkSession(): string
+    {
+        $session = $this->requestStack->getSession();
+        if (!$session->has(User::HASH_KEY)) {
+            $session->set(User::HASH_KEY, uniqid());
+        }
+
+        return $session->get(User::HASH_KEY);
     }
 
     /**
