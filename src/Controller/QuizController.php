@@ -15,8 +15,7 @@ class QuizController extends AbstractController
     public function __construct(
         private readonly QuizService $quizService,
         private readonly RequestStack $requestStack
-    )
-    {
+    ) {
     }
 
     #[Route('/quizzes', name: 'quiz_list', methods: ['GET'])]
@@ -46,6 +45,7 @@ class QuizController extends AbstractController
             $session->set(User::HASH_KEY, uniqid());
         }
         $hash = $session->get(User::HASH_KEY);
+
         return $this->json(['next_question' => $this->quizService->startQuiz($id, $hash)]);
     }
 }

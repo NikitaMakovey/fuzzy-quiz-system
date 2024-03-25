@@ -12,7 +12,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $seedFilePath = __DIR__ . '/seed.json';
+        $seedFilePath = __DIR__.'/seed.json';
         $jsonData = file_get_contents($seedFilePath);
         $quizzes = json_decode($jsonData, true)['quizzes'];
 

@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\QuizAttemptRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: QuizAttemptRepository::class)]
@@ -22,13 +21,13 @@ class QuizAttempt
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $completedAt = null;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\User::class, inversedBy: 'quizAttempts')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'quizAttempts')]
     #[ORM\JoinColumn(nullable: false)]
-    private \App\Entity\User $user;
+    private User $user;
 
-    #[ORM\ManyToOne(targetEntity: \App\Entity\Quiz::class)]
+    #[ORM\ManyToOne(targetEntity: Quiz::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private \App\Entity\Quiz $quiz;
+    private Quiz $quiz;
 
     /**
      * @var Collection|QuizAttemptQuestion[]
@@ -71,24 +70,24 @@ class QuizAttempt
         return $this;
     }
 
-    public function getUser(): ?\App\Entity\User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?\App\Entity\User $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getQuiz(): ?\App\Entity\Quiz
+    public function getQuiz(): ?Quiz
     {
         return $this->quiz;
     }
 
-    public function setQuiz(?\App\Entity\Quiz $quiz): self
+    public function setQuiz(?Quiz $quiz): self
     {
         $this->quiz = $quiz;
 

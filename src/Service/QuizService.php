@@ -18,8 +18,7 @@ class QuizService
         private readonly QuizRepository $quizRepository,
         private readonly UserRepository $userRepository,
         private readonly LoggerInterface $logger
-    )
-    {
+    ) {
     }
 
     /**
@@ -40,8 +39,6 @@ class QuizService
      * @note
      * Get quiz by ID
      *
-     * @param int $id
-     * @return null|array
      * @throws \Exception
      */
     public function getQuizById(int $id): ?array
@@ -55,6 +52,7 @@ class QuizService
         if (!$quiz) {
             throw new \Exception('Quiz does not exist.');
         }
+
         return $quiz;
     }
 
@@ -62,9 +60,6 @@ class QuizService
      * @note
      * Start new quiz session using current user HASH as identification key
      *
-     * @param int $id
-     * @param string $hash
-     * @return null|int
      * @throws \Exception
      */
     public function startQuiz(int $id, string $hash): ?int
@@ -86,9 +81,6 @@ class QuizService
     /**
      * @note
      * Get user if exists
-     *
-     * @param string $hash
-     * @return User
      */
     private function getUser(string $hash): User
     {
@@ -99,16 +91,13 @@ class QuizService
             $user->setHash($hash);
             $this->entityManager->persist($user);
         }
+
         return $user;
     }
 
     /**
      * @note
      * Create new quiz attempt for current user
-     *
-     * @param User $user
-     * @param Quiz $quiz
-     * @return QuizAttempt
      */
     private function createQuizAttempt(User $user, Quiz $quiz): QuizAttempt
     {
@@ -116,14 +105,10 @@ class QuizService
         $quizAttempt->setUser($user);
         $quizAttempt->setQuiz($quiz);
         $this->entityManager->persist($quizAttempt);
+
         return $quizAttempt;
     }
 
-    /**
-     * @param Quiz $quiz
-     * @param QuizAttempt $quizAttempt
-     * @return int|null
-     */
     private function prepareQuizQuestions(Quiz $quiz, QuizAttempt $quizAttempt): ?int
     {
         $firstQuestionId = null;
@@ -141,6 +126,7 @@ class QuizService
             $quizAttemptQuestion->setQuestion($question);
             $this->entityManager->persist($quizAttemptQuestion);
         }
+
         return $firstQuestionId; // first question to answer
     }
 }
