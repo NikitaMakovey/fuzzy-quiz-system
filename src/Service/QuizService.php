@@ -42,7 +42,7 @@ class QuizService
      */
     public function getQuizById(int $id): ?array
     {
-        $quiz = $this->quizRepository->findOneById();
+        $quiz = $this->quizRepository->findOneById($id);
         if (!$quiz) {
             throw new \Exception('Quiz does not exist.');
         }
