@@ -20,7 +20,7 @@ class QuizController extends AbstractController
     }
 
     #[Route('/quizzes', name: 'quiz_list', methods: ['GET'])]
-    public function list(): JsonResponse
+    public function index(): JsonResponse
     {
         return $this->json($this->quizService->getAllQuizzes());
     }
