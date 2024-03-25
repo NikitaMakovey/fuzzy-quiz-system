@@ -128,8 +128,11 @@ class QuizService
     {
         $firstQuestionId = null;
         $questions = $quiz->getQuestions();
-        // @todo: randomize order
-        foreach ($questions as $question) {
+
+        $questionsArray = $questions->toArray();
+        shuffle($questionsArray);
+
+        foreach ($questionsArray as $question) {
             if (!$firstQuestionId) {
                 $firstQuestionId = $question->getId();
             }
