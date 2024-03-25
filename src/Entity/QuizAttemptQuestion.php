@@ -18,6 +18,10 @@ class QuizAttemptQuestion
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
 
+    #[ORM\ManyToOne(targetEntity: Question::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private Question $question;
+
     #[ORM\ManyToOne(targetEntity: QuizAttempt::class, inversedBy: 'quizAttemptQuestions')]
     #[ORM\JoinColumn(nullable: false)]
     private QuizAttempt $quizAttempt;
@@ -59,6 +63,18 @@ class QuizAttemptQuestion
     public function setQuizAttempt(?QuizAttempt $quizAttempt): self
     {
         $this->quizAttempt = $quizAttempt;
+
+        return $this;
+    }
+
+    public function getQuestion(): ?Question
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(?Question $question): self
+    {
+        $this->question = $question;
 
         return $this;
     }
