@@ -80,7 +80,7 @@ class QuizAttemptQuestion
     }
 
     /**
-     * @return Collection|QuizAttemptAnswer[]
+     * @return Collection
      */
     public function getQuizAttemptAnswers(): Collection
     {

@@ -91,7 +91,7 @@ class QuestionService
 
         $this->addAnswers($question, $quizAttemptQuestion, $answerIds);
 
-        $nextQuestionId = $this->findNextUnansweredQuestionId($quizAttempt);
+        $nextQuestionId = $this->findNextUnansweredQuestionId($quizAttempt, $quizAttemptQuestion);
         if ($nextQuestionId) {
             return ['next_question' => $nextQuestionId];
         }
@@ -108,17 +108,21 @@ class QuestionService
     {
         $answers = $quizAttemptQuestion->getQuizAttemptAnswers();
 
-        return !empty($answers);
+        return !$answers->isEmpty();
     }
 
-    private function findNextUnansweredQuestionId(QuizAttempt $quizAttempt): ?int
+    private function findNextUnansweredQuestionId(QuizAttempt $quizAttempt, QuizAttemptQuestion $currentQuestion): ?int
     {
         $questions = $quizAttempt->getQuizAttemptQuestions();
 
         foreach ($questions as $question) {
+            if ($question == $currentQuestion) {
+                continue;
+            }
+
             $answers = $question->getQuizAttemptAnswers();
 
-            if (empty($answers)) {
+            if ($answers->isEmpty()) {
                 // this question has not been answered yet
                 return $question->getQuestion()->getId();
             }
