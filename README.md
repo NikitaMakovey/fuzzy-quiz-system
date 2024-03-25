@@ -26,6 +26,8 @@ composer install
 
 #### 3. You can use any interface (ex.: browser to test)
 
+##### You can also check [recorded demo](https://www.loom.com/share/d8347634af9749c4a8af01ead77c0af6?sid=8e074f88-adde-4c6a-bf7c-2ecf4c47440b)
+
 ```shell
 > go to http://localhost:8000/api/quizzes
 
