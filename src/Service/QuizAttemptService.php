@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Repository\QuizAttemptRepository;
+use Doctrine\ORM\Query;
 
 class QuizAttemptService
 {
@@ -19,11 +20,11 @@ class QuizAttemptService
      */
     public function getQuizAttemptById(int $id): ?array
     {
-        $quiz = $this->quizRepository->createQueryBuilder('qa')
+        $quizAttempt = $this->quizRepository->createQueryBuilder('qa')
             ->leftJoin('qa.quizAttemptQuestions', 'qaq')
             ->leftJoin('qaq.quizAttemptAnswers', 'qaa')
             ->leftJoin('qaa.answer', 'a')
-            ->leftJoin('qaq.questions', 'q')
+            ->leftJoin('qaq.question', 'q')
             ->addSelect('qaq')
             ->addSelect('qaa')
             ->addSelect('q')
@@ -31,11 +32,11 @@ class QuizAttemptService
             ->andWhere('qa.id = :id')
             ->setParameter('id', $id)
             ->getQuery()
-            ->getOneOrNullResult();
-        if (!$quiz) {
+            ->getResult(Query::HYDRATE_ARRAY);
+        if (!$quizAttempt) {
             throw new \Exception('Quiz attempt does not exist.');
         }
 
-        return $quiz;
+        return $quizAttempt;
     }
 }
