@@ -1,0 +1,42 @@
+# Symfony-specific directories
+/var/*
+!/var/cache/
+/var/cache/*
+!/var/cache/.gitkeep
+/var/log/*
+/vendor/
+
+# Symfony environment files
+.env.local
+.env.*.local
+
+# Development and test files
+/node_modules/
+/npm-debug.log
+/yarn-error.log
+/coverage/
+/phpunit.xml.dist
+/tests/
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-workspace
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Other files and directories to ignore
+/.git
+/.github
+/docker/
+/docker-compose*.yml
+/README.md
+/LICENSE
+/Makefile
+/CONTRIBUTING.md
+/Procfile
+/.env.test
+/.env.test.local
+/phpcs.xml.dist
